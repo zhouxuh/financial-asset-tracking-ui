@@ -1,11 +1,13 @@
-import { useRef, useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AuthService from '../services/AuthService';
-import AuthContext from '../context/AuthProvider';
+import useAuth from '../hooks/useAuth';
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
   const nav = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   const userRef = useRef();
   const errRef = useRef();
@@ -13,7 +15,6 @@ const Login = () => {
   const [userName, setUser] = useState('');
   const [password, setPwd] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -37,10 +38,10 @@ const Login = () => {
         console.log(roles);
         console.log(token);
         setAuth({ userName, password, roles, token });
-        setSuccess(true);
         setUser('');
         setPwd('');
-        nav('/assetList');
+        // nav('/assetList');
+        nav(from, { replace: true });
       })
       .catch((error) => {
         alert(error.response.data);

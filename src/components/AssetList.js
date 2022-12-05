@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthProvider';
 import AssetService from '../services/AssetService';
 import Asset from './Asset';
 
 const AssetList = () => {
   const nav = useNavigate();
-
+  const { setAuth } = useContext(AuthContext);
   const [loading, setloading] = useState(true);
   const [assets, setAssets] = useState(null);
 
@@ -35,6 +37,11 @@ const AssetList = () => {
     });
   };
 
+  const logout = async () => {
+    setAuth({});
+    nav('/linkpage');
+  };
+
   return (
     <div className="container mx-auto my-8">
       <div className="h-12">
@@ -43,6 +50,12 @@ const AssetList = () => {
           className="rounded bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 font-semibold shadow border-b-2"
         >
           Add New Asset
+        </button>
+        <button
+          onClick={logout}
+          className="rounded bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 font-semibold shadow border-b-2"
+        >
+          Log Out
         </button>
       </div>
       <div className="flex shadow border-b">
