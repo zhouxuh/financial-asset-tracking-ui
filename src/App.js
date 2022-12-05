@@ -15,7 +15,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route element={<RequireAuth allowedRoles={['ROLE_USER']} />}>
+        <Route
+          element={<RequireAuth allowedRoles={['ROLE_USER', 'ROLE_ADMIN']} />}
+        >
           <Route path="/assetList" element={<AssetList />} />
           <Route path="/addAsset" element={<AddAsset />} />
           <Route path="/updateAsset/:id" element={<UpdateAsset />} />

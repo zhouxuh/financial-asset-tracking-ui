@@ -4,10 +4,12 @@ import { useContext } from 'react';
 import AuthContext from '../context/AuthProvider';
 import useAxiosService from '../hooks/useAxiosService';
 import Asset from './Asset';
+import useAuth from '../hooks/useAuth';
 
 const AssetList = () => {
   const nav = useNavigate();
   const { setAuth } = useContext(AuthContext);
+  const { auth } = useAuth();
   const [loading, setloading] = useState(true);
   const [assets, setAssets] = useState(null);
   const axiosService = useAxiosService();
@@ -45,12 +47,19 @@ const AssetList = () => {
 
   return (
     <div className="container mx-auto my-8">
-      <div className="h-12">
+      <div className="h-12 flex space-x-4 items-center justify-end">
+        <div className="font-bold text-blue-500">Hi {auth.userName}</div>
         <button
           onClick={() => nav('/addAsset')}
           className="rounded bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 font-semibold shadow border-b-2"
         >
           Add New Asset
+        </button>
+        <button
+          onClick={() => nav('/')}
+          className="rounded bg-blue-500 hover:bg-blue-700 text-white px-6 py-2 font-semibold shadow border-b-2"
+        >
+          Linkpage
         </button>
         <button
           onClick={logout}

@@ -13,7 +13,7 @@ const Admin = () => {
           className="rounded text-white font-semibold bg-blue-400
           hover:bg-blue-700 px-6 py-2 shadow border-b-2"
         >
-          <Link to="/">Home</Link>
+          <Link to="/">Linkpage</Link>
         </div>
       </div>
     </div>
