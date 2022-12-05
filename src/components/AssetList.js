@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthProvider';
-import AssetService from '../services/AssetService';
+import useAxiosService from '../hooks/useAxiosService';
 import Asset from './Asset';
 
 const AssetList = () => {
@@ -10,12 +10,13 @@ const AssetList = () => {
   const { setAuth } = useContext(AuthContext);
   const [loading, setloading] = useState(true);
   const [assets, setAssets] = useState(null);
+  const axiosService = useAxiosService();
 
   useEffect(() => {
     const getAllAssets = async () => {
       setloading(true);
       try {
-        const response = await AssetService.getAssets();
+        const response = await axiosService.get('/assets');
         setAssets(response.data);
         console.log(response.data);
       } catch (error) {
@@ -24,11 +25,11 @@ const AssetList = () => {
       setloading(false);
     };
     getAllAssets();
-  }, []);
+  }, [axiosService]);
 
-  const deleteAsset = (e, id) => {
+  const deleteAssetHandler = (e, id) => {
     e.preventDefault();
-    AssetService.deleteAsset(id).then((response) => {
+    axiosService.delete('/asset/' + id).then((response) => {
       if (assets) {
         setAssets((prevAsset) => {
           return prevAsset.filter((asset) => asset.id !== id);
@@ -94,7 +95,7 @@ const AssetList = () => {
                 <Asset
                   asset={asset}
                   key={asset.id}
-                  deleteAsset={deleteAsset}
+                  deleteAsset={deleteAssetHandler}
                 ></Asset>
               ))}
             </tbody>

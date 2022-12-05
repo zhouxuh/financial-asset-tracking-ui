@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import AssetService from '../services/AssetService';
+import useAxiosService from '../hooks/useAxiosService';
 
 const UpdateAsset = () => {
+  const axiosService = useAxiosService();
   const { id } = useParams();
   const [asset, setAsset] = useState({
     id: id,
@@ -23,18 +24,19 @@ const UpdateAsset = () => {
   useEffect(() => {
     const fetchAssetById = async () => {
       try {
-        const response = await AssetService.getAssetById(id);
+        const response = await axiosService.get('/asset/' + id);
         setAsset(response.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchAssetById();
-  }, [id]);
+  }, [id, axiosService]);
 
-  const updateAsset = (e) => {
+  const updateAssetHandler = (e) => {
     e.preventDefault();
-    AssetService.updateAsset(asset, id)
+    axiosService
+      .put('/asset/' + id, asset)
       .then((response) => {
         if (response.status === 200) {
           alert('Updated asset successfully.');
@@ -118,7 +120,7 @@ const UpdateAsset = () => {
 
         <div className="flex item-center justify-center h-14 w-full my-4 space-x-4 pt-4">
           <button
-            onClick={updateAsset}
+            onClick={updateAssetHandler}
             className="rounded text-white font-semibold bg-blue-400
         hover:bg-blue-700 px-6 py-2 shadow border-b-2"
           >

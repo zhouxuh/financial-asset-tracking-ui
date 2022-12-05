@@ -67,6 +67,7 @@ const Login = () => {
             type="text"
             id="username"
             ref={userRef}
+            autoComplete="off"
             onChange={(e) => setUser(e.target.value)}
             value={userName}
             required
@@ -81,6 +82,7 @@ const Login = () => {
           <input
             type="password"
             id="password"
+            autoComplete="off"
             onChange={(e) => setPwd(e.target.value)}
             value={password}
             required

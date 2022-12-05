@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AssetService from '../services/AssetService';
+import useAxiosService from '../hooks/useAxiosService';
 
 const AddAsset = () => {
+  const axiosService = useAxiosService();
   const [asset, setAsset] = useState({
     id: '',
     name: '',
@@ -19,9 +20,10 @@ const AddAsset = () => {
     setAsset({ ...asset, [e.target.name]: value });
   };
 
-  const saveAsset = (e) => {
+  const saveAssetHandler = (e) => {
     e.preventDefault();
-    AssetService.saveAsset(asset)
+    axiosService
+      .post('/asset', asset)
       .then((response) => {
         if (response.status === 201) {
           alert('Added asset successfully.');
@@ -117,7 +119,7 @@ const AddAsset = () => {
 
         <div className="flex item-center justify-center h-14 w-full my-4 space-x-4 pt-4">
           <button
-            onClick={saveAsset}
+            onClick={saveAssetHandler}
             className="rounded text-white font-semibold bg-blue-400
             hover:bg-blue-700 px-6 py-2 shadow border-b-2"
           >
